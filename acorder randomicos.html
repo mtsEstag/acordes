@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acordes Aleatórios</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    #acorde {
+      font-size: 5rem;
+      font-weight: bold;
+      color: #00ffcc;
+      margin-bottom: 1rem;
+    }
+
+    #imagem-acorde {
+      width: 300px;
+      height: auto;
+      margin-bottom: 2rem;
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+
+    #tempo {
+      font-size: 1rem;
+    }
+
+    input[type="number"] {
+      width: 60px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Acorde Atual:</h1>
+  <div id="acorde">Dó (C)</div>
+  <img id="imagem-acorde" src="imagem/Do.jpg" alt="Imagem do acorde Dó" />
+
+  <div id="tempo">
+    Trocar a cada <input type="number" id="intervalo" value="5" min="1" /> segundos
+  </div>
+
+  <script>
+    const acordes = [
+      { nome: "Do", label: "Dó", nota: "C" },
+      { nome: "Re", label: "Ré", nota: "D" },
+      { nome: "Mi", label: "Mi", nota: "E" },
+      { nome: "Fa", label: "Fá", nota: "F" },
+      { nome: "Sol", label: "Sol", nota: "G" },
+      { nome: "La", label: "Lá", nota: "A" },
+      { nome: "Si", label: "Si", nota: "B" }
+    ];
+
+    const acordeEl = document.getElementById("acorde");
+    const imagemEl = document.getElementById("imagem-acorde");
+    const intervaloInput = document.getElementById("intervalo");
+
+    let ultimoAcorde = "";
+    let timer;
+
+    function trocarAcorde() {
+      let novo;
+      do {
+        novo = acordes[Math.floor(Math.random() * acordes.length)];
+      } while (novo.nome === ultimoAcorde);
+
+      ultimoAcorde = novo.nome;
+      acordeEl.textContent = `${novo.label} (${novo.nota})`;
+      imagemEl.src = `imagem/${novo.nome}.jpg`;
+      imagemEl.alt = `Imagem do acorde ${novo.label}`;
+    }
+
+    function iniciarTrocas() {
+      clearInterval(timer);
+      const intervalo = parseInt(intervaloInput.value) * 1000;
+      timer = setInterval(trocarAcorde, intervalo);
+    }
+
+    intervaloInput.addEventListener("change", iniciarTrocas);
+
+    // Iniciar pela primeira vez
+    trocarAcorde();
+    iniciarTrocas();
+  </script>
+</body>
+</html>
